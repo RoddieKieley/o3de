@@ -31,8 +31,8 @@ int StringHelpers::CompareIgnoreCase(const AZStd::wstring& str0, const AZStd::ws
     const size_t minLength = Util::getMin(str0.length(), str1.length());
     for (size_t i = 0; i < minLength; ++i)
     {
-        const wchar_t c0 = towlower(str0[i]);
-        const wchar_t c1 = towlower(str1[i]);
+        const wchar_t c0 = tolower(str0[i]);
+        const wchar_t c1 = tolower(str1[i]);
         if (c0 != c1)
         {
             return (c0 < c1) ? -1 : 1;

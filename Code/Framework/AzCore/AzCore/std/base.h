@@ -11,6 +11,8 @@
 #include <AzCore/base.h>
 #include <AzCore/std/config.h>
 #include <initializer_list>
+#include <limits>
+#include <cstdio>
 
 #define AZSTD_PRINTF printf
 
