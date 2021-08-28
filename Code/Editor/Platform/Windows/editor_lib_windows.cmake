@@ -6,7 +6,3 @@
 #
 #
 
-set(LY_BUILD_DEPENDENCIES
-    PRIVATE
-        gdi32
-)
