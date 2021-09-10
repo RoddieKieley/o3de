@@ -6,6 +6,8 @@
  *
  */
 
+#pragma once
+
 #include <AzFramework/API/ApplicationAPI_Platform.h>
 #include <AzFramework/Application/Application.h>
 
