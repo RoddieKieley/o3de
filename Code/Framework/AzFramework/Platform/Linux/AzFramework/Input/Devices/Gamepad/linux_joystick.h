@@ -27,6 +27,11 @@
 #ifndef GLFW_LINUX_JOYSTICK_H
 #define GLFW_LINUX_JOYSTICK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #include <linux/input.h>
 #include <linux/limits.h>
 #include <regex.h>
@@ -37,31 +42,37 @@
 #define _GLFW_PLATFORM_MAPPING_NAME "Linux"
 #define GLFW_BUILD_LINUX_MAPPINGS
 
-// Linux-specific joystick data
-//
-typedef struct _GLFWjoystickLinux
-{
-    int                     fd;
-    char                    path[PATH_MAX];
-    int                     keyMap[KEY_CNT - BTN_MISC];
-    int                     absMap[ABS_CNT];
-    struct input_absinfo    absInfo[ABS_CNT];
-    int                     hats[4][2];
-} _GLFWjoystickLinux;
+    // Linux-specific joystick data
+    //
+    typedef struct _GLFWjoystickLinux
+    {
+        int                     fd;
+        char                    path[PATH_MAX];
+        int                     keyMap[KEY_CNT - BTN_MISC];
+        int                     absMap[ABS_CNT];
+        struct input_absinfo    absInfo[ABS_CNT];
+        int                     hats[4][2];
+    } _GLFWjoystickLinux;
 
-// Linux-specific joystick API data
-//
-typedef struct _GLFWlibraryLinux
-{
-    int                     inotify;
-    int                     watch;
-    regex_t                 regex;
-    GLFWbool                dropped;
-} _GLFWlibraryLinux;
+    // Linux-specific joystick API data
+    //
+    typedef struct _GLFWlibraryLinux
+    {
+        int                     inotify;
+        int                     watch;
+        regex_t                 regex;
+        GLFWbool                dropped;
+    } _GLFWlibraryLinux;
 
 
-GLFWbool _glfwInitJoysticksLinux(void);
-void _glfwTerminateJoysticksLinux(void);
-void _glfwDetectJoystickConnectionLinux(void);
+
+    extern GLFWbool _glfwInitJoysticksLinux(void);
+    extern void _glfwTerminateJoysticksLinux(void);
+    extern void _glfwDetectJoystickConnectionLinux(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif // GLFW_LINUX_JOYSTICK_H

@@ -22,10 +22,17 @@ set(FILES
     AzFramework/Windowing/NativeWindow_Linux.cpp
     AzFramework/Input/Buses/Notifications/RawInputNotificationBus_Platform.h
     AzFramework/Input/Buses/Notifications/RawInputNotificationBus_Linux.h
+    AzFramework/Input/Devices/Gamepad/glfw3common.h
+    AzFramework/Input/Devices/Gamepad/glfw3joystick.h
+    AzFramework/Input/Devices/Gamepad/init_joystick.h
+    AzFramework/Input/Devices/Gamepad/internal_joystick.h
+    AzFramework/Input/Devices/Gamepad/linux_joystick.h
+    AzFramework/Input/Devices/Gamepad/posix_time.h
+    AzFramework/Input/Devices/Gamepad/input_joystick.c
+    AzFramework/Input/Devices/Gamepad/init_joystick.c
+    AzFramework/Input/Devices/Gamepad/linux_joystick.c
+    AzFramework/Input/Devices/Gamepad/posix_time.c
     AzFramework/Input/Devices/Gamepad/InputDeviceGamepad_Linux.cpp
-        AzFramework/Input/Devices/Gamepad/input_joystick.c
-        AzFramework/Input/Devices/Gamepad/linux_joystick.c
-        AzFramework/Input/Devices/Gamepad/posix_time.c
     AzFramework/Input/Devices/Keyboard/InputDeviceKeyboard_Linux.cpp
     AzFramework/Input/Devices/Mouse/InputDeviceMouse_Linux.cpp
     ../Common/Unimplemented/AzFramework/Input/Devices/Motion/InputDeviceMotion_Unimplemented.cpp

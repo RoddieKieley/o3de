@@ -5,9 +5,9 @@
 #ifndef GLFW_INTERNAL_JOYSTICK_H
 #define GLFW_INTERNAL_JOYSTICK_H
 
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "glfw3joystick.h"
 #include "glfw3common.h"
@@ -152,8 +152,8 @@ void _glfwFreeJoystick(_GLFWjoystick* js);
 //}
 
 
-//#ifdef __cplusplus
-//}
-//#endif
+#ifdef __cplusplus
+}
+#endif
 
 #endif //GLFW_INTERNAL_JOYSTICK_H

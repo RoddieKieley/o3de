@@ -27,62 +27,69 @@
 // It is fine to use C99 in this file because it will not be built with VS
 //========================================================================
 
-//#include "internal.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    //#include "internal.h"
 #include "internal_joystick.h"
 
 #include <sys/time.h>
 #include <time.h>
 
 
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW internal API                      //////
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    //////                       GLFW internal API                      //////
+    //////////////////////////////////////////////////////////////////////////
 
-// Initialise timer
-//
-void _glfwInitTimerPOSIX(void)
-{
+    // Initialise timer
+    //
+    void _glfwInitTimerPOSIX(void)
+    {
 #if defined(CLOCK_MONOTONIC)
-    struct timespec ts;
-
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0)
-    {
-        _glfw_joystick.timer.posix.monotonic = GLFW_TRUE;
-        _glfw_joystick.timer.posix.frequency = 1000000000;
-    }
-    else
-#endif
-    {
-        _glfw_joystick.timer.posix.monotonic = GLFW_FALSE;
-        _glfw_joystick.timer.posix.frequency = 1000000;
-    }
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-//////                       GLFW platform API                      //////
-//////////////////////////////////////////////////////////////////////////
-
-uint64_t _glfwPlatformGetTimerValue(void)
-{
-#if defined(CLOCK_MONOTONIC)
-    if (_glfw_joystick.timer.posix.monotonic)
-    {
         struct timespec ts;
-        clock_gettime(CLOCK_MONOTONIC, &ts);
-        return (uint64_t) ts.tv_sec * (uint64_t) 1000000000 + (uint64_t) ts.tv_nsec;
-    }
-    else
+
+        if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0)
+        {
+            _glfw_joystick.timer.posix.monotonic = GLFW_TRUE;
+            _glfw_joystick.timer.posix.frequency = 1000000000;
+        }
+        else
 #endif
-    {
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        return (uint64_t) tv.tv_sec * (uint64_t) 1000000 + (uint64_t) tv.tv_usec;
-    }
-}
-
-uint64_t _glfwPlatformGetTimerFrequency(void)
 {
-    return _glfw_joystick.timer.posix.frequency;
-}
+            _glfw_joystick.timer.posix.monotonic = GLFW_FALSE;
+            _glfw_joystick.timer.posix.frequency = 1000000;
+        }
+    }
 
+
+    //////////////////////////////////////////////////////////////////////////
+    //////                       GLFW platform API                      //////
+    //////////////////////////////////////////////////////////////////////////
+
+    uint64_t _glfwPlatformGetTimerValue(void)
+    {
+#if defined(CLOCK_MONOTONIC)
+        if (_glfw_joystick.timer.posix.monotonic)
+        {
+            struct timespec ts;
+            clock_gettime(CLOCK_MONOTONIC, &ts);
+            return (uint64_t) ts.tv_sec * (uint64_t) 1000000000 + (uint64_t) ts.tv_nsec;
+        }
+        else
+#endif
+{
+            struct timeval tv;
+            gettimeofday(&tv, NULL);
+            return (uint64_t) tv.tv_sec * (uint64_t) 1000000 + (uint64_t) tv.tv_usec;
+        }
+    }
+
+    uint64_t _glfwPlatformGetTimerFrequency(void)
+    {
+        return _glfw_joystick.timer.posix.frequency;
+    }
+
+#ifdef __cplusplus
+}
+#endif
