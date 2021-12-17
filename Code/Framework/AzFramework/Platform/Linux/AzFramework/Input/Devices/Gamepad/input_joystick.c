@@ -20,6 +20,8 @@ extern "C" {
 #define _GLFW_JOYSTICK_BUTTON   2
 #define _GLFW_JOYSTICK_HATBIT   3
 
+//    struct _GLFWlibraryjoystick _glfw_joystick = { GLFW_FALSE };
+
     // Finds a mapping based on joystick GUID
     //
     static _GLFWmapping* findMapping(const char* guid)

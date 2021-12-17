@@ -16,7 +16,7 @@ extern "C" {
 
     // Global state shared between compilation units of GLFW
     //
-    _GLFWlibraryjoystick _glfw_joystick = { GLFW_FALSE };
+//    _GLFWlibraryjoystick _glfw_joystick = { GLFW_FALSE };
 
     static _GLFWinitconfigjoystick _glfwInitHintsJoystick =
             {

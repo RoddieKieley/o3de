@@ -436,6 +436,55 @@ void _glfwPlatformUpdateGamepadGUID(char* guid)
 {
 }
 
+// TODO: RNK: 12/03/21 - Determine where this should really live
+// Wait for data to arrive using select
+// This avoids blocking other threads via the per-display Xlib lock that also
+// covers GLX functions
+//
+//static GLFWbool waitForEvent(double* timeout)
+GLFWbool waitForEvent(double* timeout)
+{
+        fd_set fds;
+        const int fd = 0;//ConnectionNumber(_glfw.x11.display);
+        int count = fd + 1;
+
+        _glfwPlatformPollJoystick(_glfw_joystick.joysticks, 0);
+#if defined(__linux__)
+        if (_glfw_joystick.linjs.inotify > fd)
+            count = _glfw_joystick.linjs.inotify + 1;
+#endif
+        for (;;)
+        {
+            FD_ZERO(&fds);
+            FD_SET(fd, &fds);
+#if defined(__linux__)
+            if (_glfw_joystick.linjs.inotify > 0)
+                FD_SET(_glfw_joystick.linjs.inotify, &fds);
+#endif
+
+            if (timeout)
+            {
+                const long seconds = (long) *timeout;
+                const long microseconds = (long) ((*timeout - seconds) * 1e6);
+                struct timeval tv = { seconds, microseconds };
+                const uint64_t base = _glfwPlatformGetTimerValue();
+
+                const int result = select(count, &fds, NULL, NULL, &tv);
+                const int error = errno;
+
+                *timeout -= (_glfwPlatformGetTimerValue() - base) /
+                        (double) _glfwPlatformGetTimerFrequency();
+
+                if (result > 0)
+                    return GLFW_TRUE;
+                if ((result == -1 && error == EINTR) || *timeout <= 0.0)
+                    return GLFW_FALSE;
+            }
+            else if (select(count, &fds, NULL, NULL, NULL) != -1 || errno != EINTR)
+                return GLFW_TRUE;
+        }
+}
+
 #ifdef __cplusplus
 }
 #endif

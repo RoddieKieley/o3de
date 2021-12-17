@@ -6,6 +6,10 @@
 #define GLFW_GLFW3JOYSTICK_H
 
 #include "glfw3common.h"
+#include "internal_joystick.h"
+#include "linux_joystick.h"
+#include "posix_time.h"
+#include <stdint.h>
 
 
 /*! @defgroup joysticks Joysticks
@@ -151,6 +155,92 @@ typedef struct GLFWgamepadstate
      */
     float axes[6];
 } GLFWgamepadstate;
+
+
+
+// Gamepad mapping element structure
+//
+typedef struct _GLFWmapelement
+{
+    uint8_t         type;
+    uint8_t         index;
+    int8_t          axisScale;
+    int8_t          axisOffset;
+} _GLFWmapelement;
+
+// Gamepad mapping structure
+//
+typedef struct _GLFWmapping
+{
+    char            name[128];
+    char            guid[33];
+    _GLFWmapelement buttons[15];
+    _GLFWmapelement axes[6];
+} _GLFWmapping;
+
+//#define _GLFW_PLATFORM_JOYSTICK_STATE         _GLFWjoystickLinux linjs
+
+typedef struct _GLFWjoystick
+{
+    GLFWbool        present;
+    float*          axes;
+    int             axisCount;
+    unsigned char*  buttons;
+    int             buttonCount;
+    unsigned char*  hats;
+    int             hatCount;
+    char            name[128];
+    void*           userPointer;
+    char            guid[33];
+    _GLFWmapping*   mapping;
+
+    // This is defined in the joystick API's joystick.h
+    _GLFW_PLATFORM_JOYSTICK_STATE;
+} _GLFWjoystick;
+
+// Initialization configuration
+//
+// Parameters relating to the initialization of the library
+//
+typedef struct _GLFWinitconfigjoystick
+{
+    GLFWbool      hatButtons;
+    //    struct {
+    //        GLFWbool  menubar;
+    //        GLFWbool  chdir;
+    //    } ns;
+} _GLFWinitconfigjoystick;
+
+typedef struct _GLFWlibraryjoystick
+{
+    GLFWbool            initialized;
+
+    struct {
+        _GLFWinitconfigjoystick init;
+    } hints;
+
+    _GLFWjoystick       joysticks[GLFW_JOYSTICK_LAST + 1];
+    _GLFWmapping*       mappings;
+    int                 mappingCount;
+
+    struct {
+        uint64_t        offset;
+        // This is defined in the platform's time.h
+        _GLFW_PLATFORM_LIBRARY_TIMER_STATE;
+        //        _GLFWtimerPOSIX posix;
+    } timer;
+
+    struct {
+        //        GLFWmonitorfun  monitor;
+        GLFWjoystickfun joystick;
+    } callbacks;
+
+    // This is defined in the platform's joystick.h
+    _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE;
+} _GLFWlibraryjoystick;
+//typedef struct _GLFWlibraryjoystick _glfw_joystick;
+
+static _GLFWlibraryjoystick _glfw_joystick = { GLFW_FALSE };
 
 /*! @brief Returns whether the specified joystick is present.
  *
