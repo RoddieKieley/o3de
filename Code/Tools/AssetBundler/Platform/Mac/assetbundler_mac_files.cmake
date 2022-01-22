@@ -7,5 +7,7 @@
 #
 
 #set(FILES
-#    source/utils/GUIApplicationManager_OSX.cpp
+#    native/FileWatcher/FileWatcher_macos.cpp
+#    native/FileWatcher/FileWatcher_mac.h
+#    native/FileWatcher/FileWatcher_platform.h
 #)

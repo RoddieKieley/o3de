@@ -17,11 +17,14 @@ ly_add_target(
     NAME AssetBundlerBatch.Static STATIC
     NAMESPACE AZ
     AUTOMOC
+    AUTORCC
     FILES_CMAKE
         assetbundlerbatch_files.cmake
+        Platform/${PAL_PLATFORM_NAME}/assetbundler_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
     INCLUDE_DIRECTORIES
         PRIVATE
             .
+            Platform/${PAL_PLATFORM_NAME}
     BUILD_DEPENDENCIES
         PUBLIC
             3rdParty::Qt::Core
@@ -58,10 +61,12 @@ ly_add_target(
     AUTOMOC
     AUTOUIC
     AUTORCC
-    FILES_CMAKE 
+    FILES_CMAKE
         assetbundlergui_files.cmake
         assetbundler_exe_files.cmake
-        Platform/${PAL_PLATFORM_NAME}/assetbundlergui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+        Platform/${PAL_PLATFORM_NAME}/assetbundler_gui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+    PLATFORM_INCLUDE_FILES
+        Platform/${PAL_PLATFORM_NAME}/assetbundler_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
     INCLUDE_DIRECTORIES
         PUBLIC
             Platform/${PAL_PLATFORM_NAME}

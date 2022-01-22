@@ -6,6 +6,7 @@
 #
 #
 
-#set(FILES
-#    source/utils/GUIApplicationManager_OSX.cpp
-#)
+set(FILES
+    gui_info.plist
+    source/utils/GUIApplicationManager_OSX.cpp
+)
