@@ -18,10 +18,13 @@ ly_add_target(
     AUTORCC
     FILES_CMAKE
         gridhub_files.cmake
-        Platform/${PAL_PLATFORM_NAME}/gridhub_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+        Platform/${PAL_PLATFORM_NAME}/gridhub_gui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
     PLATFORM_INCLUDE_FILES
+        Platform/${PAL_PLATFORM_NAME}/gridhub_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
         Platform/${PAL_PLATFORM_NAME}/platform_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
     INCLUDE_DIRECTORIES
+        PUBLIC
+            Platform/${PAL_PLATFORM_NAME}
         PRIVATE
             .
     BUILD_DEPENDENCIES
