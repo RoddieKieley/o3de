@@ -21,7 +21,12 @@ ly_add_target(
     FILES_CMAKE
         lua_ide_files.cmake
         ${pal_dir}/lua_ide_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+    PLATFORM_INCLUDE_FILES
+        Platform/${PAL_PLATFORM_NAME}/lua_ide_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
+        Platform/${PAL_PLATFORM_NAME}/lua_ide_gui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
     INCLUDE_DIRECTORIES
+        PUBLIC
+            Platform/${PAL_PLATFORM_NAME}
         PRIVATE
             .
             Source/Editor
