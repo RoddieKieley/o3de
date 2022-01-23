@@ -22,6 +22,7 @@ ly_add_target(
     NAME ProjectManager.Static STATIC
     NAMESPACE AZ
     AUTOMOC
+    AUTORCC
     FILES_CMAKE
         project_manager_files.cmake
         Platform/${PAL_PLATFORM_NAME}/PAL_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
@@ -32,9 +33,11 @@ ly_add_target(
         PRIVATE
             PY_PACKAGE="${python_package_name}" 
     INCLUDE_DIRECTORIES
+        PUBLIC
+            .
+            Platform/${PAL_PLATFORM_NAME}
         PRIVATE
             Source
-            Platform/${PAL_PLATFORM_NAME}
     BUILD_DEPENDENCIES
         PRIVATE
             3rdParty::Qt::Core
@@ -54,7 +57,12 @@ ly_add_target(
     AUTORCC
     FILES_CMAKE
         project_manager_app_files.cmake
+        Platform/${PAL_PLATFORM_NAME}/project_manager_gui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+    PLATFORM_INCLUDE_FILES
+        Platform/${PAL_PLATFORM_NAME}/project_manager_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
     INCLUDE_DIRECTORIES
+        PUBLIC
+            .
         PRIVATE
             Source
     BUILD_DEPENDENCIES
