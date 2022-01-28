@@ -49,14 +49,19 @@ ly_add_target(
     NAMESPACE AZ
     AUTOMOC
     AUTOUIC
+    AUTORCC
     FILES_CMAKE
         AzQtComponents/azqtcomponents_gallery_files.cmake
+        Platform/${PAL_PLATFORM_NAME}/O3DEQtControlGallery_gui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+    PLATFORM_INCLUDE_FILES
+        Platform/${PAL_PLATFORM_NAME}/O3DEQtControlGallery_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
     INCLUDE_DIRECTORIES
-        PRIVATE
+        PUBLIC
             .
+            ${pal_dir}
+        PRIVATE
             AzQtComponents
             AzQtComponents/Gallery
-            ${pal_dir}
     BUILD_DEPENDENCIES
         PRIVATE
             3rdParty::Qt::Svg
@@ -68,8 +73,17 @@ ly_add_target(
 ly_add_target(
     NAME ReflectedPropertyEditorStandalone APPLICATION
     NAMESPACE AZ
+    AUTOMOC
+    AUTORCC
     FILES_CMAKE
         AzQtComponents/azqtcomponents_rpestandalone_files.cmake
+        Platform/${PAL_PLATFORM_NAME}/ReflectedPropertyEditorStandalone_gui_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+    PLATFORM_INCLUDE_FILES
+        Platform/${PAL_PLATFORM_NAME}/ReflectedPropertyEditorStandalone_${PAL_PLATFORM_NAME_LOWERCASE}.cmake
+    INCLUDE_DIRECTORIES
+        PUBLIC
+        .
+        ${pal_dir}
     BUILD_DEPENDENCIES
         PRIVATE
             3rdParty::Qt::Widgets
