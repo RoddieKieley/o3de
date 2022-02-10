@@ -22,7 +22,6 @@ ly_add_target(
     NAME ProjectManager.Static STATIC
     NAMESPACE AZ
     AUTOMOC
-    AUTORCC
     FILES_CMAKE
         project_manager_files.cmake
         Platform/${PAL_PLATFORM_NAME}/PAL_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake

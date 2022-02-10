@@ -11,7 +11,7 @@
 	<key>CFBundleSignature</key>
 	<string>ASPR</string>
 	<key>CFBundleExecutable</key>
-    <string>ProjectManager</string>
+    <string>o3de</string>
 	<key>CFBundleIdentifier</key>
     <string>com.Amazon.Lumberyard.ProjectManager</string>
 </dict>
