@@ -9,10 +9,10 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright (c) Contributors to the Open 3D Engine Project.</string>
 	<key>CFBundleSignature</key>
-	<string>ASPR</string>
+	<string>O3DE</string>
 	<key>CFBundleExecutable</key>
     <string>GridHub</string>
 	<key>CFBundleIdentifier</key>
-    <string>com.Amazon.Lumberyard.GridHub</string>
+    <string>org.o3de.GridHub</string>
 </dict>
 </plist>

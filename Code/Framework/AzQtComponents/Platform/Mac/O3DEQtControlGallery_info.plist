@@ -9,7 +9,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright (c) Contributors to the Open 3D Engine Project.</string>
 	<key>CFBundleSignature</key>
-	<string>ASPR</string>
+	<string>O3DE</string>
 	<key>CFBundleExecutable</key>
 	<string>O3DEQtControlGallery</string>
 	<key>CFBundleIdentifier</key>
