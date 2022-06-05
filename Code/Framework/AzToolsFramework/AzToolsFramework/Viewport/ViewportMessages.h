@@ -31,6 +31,8 @@ namespace AzFramework
 
 namespace AzToolsFramework
 {
+    enum class CursorInputMode;
+    
     namespace ViewportInteraction
     {
         //! Result of handling mouse interaction.
@@ -212,6 +214,8 @@ namespace AzToolsFramework
             virtual bool StickySelectEnabled() const = 0;
             //! Returns the default viewport camera position.
             virtual AZ::Vector3 DefaultEditorCameraPosition() const = 0;
+            //! Returns the default viewport camera orientation (pitch and yaw in degrees).
+            virtual AZ::Vector2 DefaultEditorCameraOrientation() const = 0;
             //! Returns if icons are visible in the viewport.
             virtual bool IconsVisible() const = 0;
             //! Returns if viewport helpers (additional debug drawing) are visible in the viewport.
@@ -323,6 +327,8 @@ namespace AzToolsFramework
             virtual void BeginCursorCapture() = 0;
             //! Restores the cursor and ends locking it in place, allowing it to be moved freely.
             virtual void EndCursorCapture() = 0;
+            //!  Sets the cursor input mode.
+            virtual void SetCursorMode(AzToolsFramework::CursorInputMode mode) = 0;
             //! Is the mouse over the viewport.
             virtual bool IsMouseOver() const = 0;
             //! Set the cursor style override.

@@ -249,7 +249,7 @@ namespace AZ
 
         void DiffuseProbeGridVisualizationRayTracingPass::CompileResources([[maybe_unused]] const RHI::FrameGraphCompileContext& context)
         {           
-            const RHI::ImageView* outputImageView = context.GetImageView(GetOutputBinding(0).m_attachment->GetAttachmentId());
+            const RHI::ImageView* outputImageView = context.GetImageView(GetOutputBinding(0).GetAttachment()->GetAttachmentId());
             AZ_Assert(outputImageView, "Failed to retrieve output ImageView");
 
             RPI::Scene* scene = m_pipeline->GetScene();
@@ -280,8 +280,16 @@ namespace AZ
                 return;
             }
 
-            for (auto& diffuseProbeGrid : diffuseProbeGridFeatureProcessor->GetVisibleProbeGrids())
+            // compute the index range to process for this command list
+            uint32_t numGrids = aznumeric_cast<uint32_t>(diffuseProbeGridFeatureProcessor->GetVisibleProbeGrids().size());
+            uint32_t startIndex = (context.GetCommandListIndex() * numGrids) / context.GetCommandListCount();
+            uint32_t endIndex = ((context.GetCommandListIndex() + 1) * numGrids) / context.GetCommandListCount();
+
+            // submit the DispatchRaysItems for each DiffuseProbeGrid in this range
+            for (uint32_t index = startIndex; index < endIndex; ++index)
             {
+                AZStd::shared_ptr<DiffuseProbeGrid> diffuseProbeGrid = diffuseProbeGridFeatureProcessor->GetVisibleProbeGrids()[index];
+
                 if (!diffuseProbeGrid->GetVisualizationEnabled())
                 {
                     continue;
