@@ -13,6 +13,6 @@
 	<key>CFBundleExecutable</key>
 	<string>AssetProcessor</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.o3de.AssetProcessor</string>
+	<string>com.O3DE.AssetProcessor</string>
 </dict>
 </plist>

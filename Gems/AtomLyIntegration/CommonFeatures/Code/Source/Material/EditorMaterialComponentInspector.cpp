@@ -49,14 +49,14 @@ namespace AZ
                 : AtomToolsFramework::InspectorWidget(parent)
             {
                 CreateHeading();
-                AZ::TickBus::Handler::BusConnect();
+                AZ::SystemTickBus::Handler::BusConnect();
                 AZ::EntitySystemBus::Handler::BusConnect();
                 EditorMaterialSystemComponentNotificationBus::Handler::BusConnect();
             }
 
             MaterialPropertyInspector::~MaterialPropertyInspector()
             {
-                AZ::TickBus::Handler::BusDisconnect();
+                AZ::SystemTickBus::Handler::BusDisconnect();
                 AZ::EntitySystemBus::Handler::BusDisconnect();
                 EditorMaterialSystemComponentNotificationBus::Handler::BusDisconnect();
                 MaterialComponentNotificationBus::MultiHandler::BusDisconnect();
@@ -218,7 +218,7 @@ namespace AZ
 
                 AZStd::string slotName;
                 MaterialComponentRequestBus::EventResult(
-                    slotName, m_primaryEntityId, &MaterialComponentRequestBus::Events::GetMaterialSlotLabel, m_materialAssignmentId);
+                    slotName, m_primaryEntityId, &MaterialComponentRequestBus::Events::GetMaterialLabel, m_materialAssignmentId);
 
                 QString materialInfo;
                 materialInfo += tr("<table>");
@@ -431,7 +431,7 @@ namespace AZ
 
                 m_editData.m_materialPropertyOverrideMap.clear();
                 MaterialComponentRequestBus::EventResult(
-                    m_editData.m_materialPropertyOverrideMap, m_primaryEntityId, &MaterialComponentRequestBus::Events::GetPropertyOverrides,
+                    m_editData.m_materialPropertyOverrideMap, m_primaryEntityId, &MaterialComponentRequestBus::Events::GetPropertyValues,
                     m_materialAssignmentId);
 
                 // Apply any automatic property renames so that the material inspector will be properly initialized with the right values
@@ -497,7 +497,7 @@ namespace AZ
                 for (const AZ::EntityId& entityId : m_entityIdsToEdit)
                 {
                     MaterialComponentRequestBus::Event(
-                        entityId, &MaterialComponentRequestBus::Events::SetPropertyOverride, m_materialAssignmentId,
+                        entityId, &MaterialComponentRequestBus::Events::SetPropertyValue, m_materialAssignmentId,
                         property.GetId().GetStringView(), property.GetValue());
                 }
 
@@ -725,11 +725,9 @@ namespace AZ
                     return;
                 }
 
-                QAction* action = nullptr;
-
                 QMenu menu(this);
 
-                action = menu.addAction(tr("Save As..."), [this] {
+                menu.addAction(tr("Save As..."), [this] {
                     const auto& defaultPath = AtomToolsFramework::GetUniqueFilePath(AZStd::string::format(
                         "%s/Assets/untitled.%s", AZ::Utils::GetProjectPath().c_str(), AZ::RPI::MaterialSourceData::Extension));
                     SaveMaterial(defaultPath);
@@ -738,14 +736,14 @@ namespace AZ
                 if (IsSourceMaterial(m_editData.m_materialSourcePath))
                 {
                     const auto& materialSourceFileName = GetFileName(m_editData.m_materialSourcePath);
-                    action = menu.addAction(tr("Save Over \"%1\"...").arg(materialSourceFileName.c_str()), [this] {
+                    menu.addAction(tr("Save Over \"%1\"...").arg(materialSourceFileName.c_str()), [this] {
                         SaveMaterial(m_editData.m_materialSourcePath);
                     });
                 }
 
                 menu.addSeparator();
 
-                action = menu.addAction("Clear Overrides", [this] {
+                menu.addAction("Clear Overrides", [this] {
                     AzToolsFramework::ScopedUndoBatch undoBatch("Clear material property overrides.");
                     m_editData.m_materialPropertyOverrideMap.clear();
                     for (const AZ::EntityId& entityId : m_entityIdsToEdit)
@@ -753,7 +751,7 @@ namespace AZ
                         AzToolsFramework::ToolsApplicationRequests::Bus::Broadcast(
                             &AzToolsFramework::ToolsApplicationRequests::Bus::Events::AddDirtyEntity, entityId);
                         MaterialComponentRequestBus::Event(
-                            entityId, &MaterialComponentRequestBus::Events::SetPropertyOverrides, m_materialAssignmentId,
+                            entityId, &MaterialComponentRequestBus::Events::SetPropertyValues, m_materialAssignmentId,
                             m_editData.m_materialPropertyOverrideMap);
                         MaterialComponentNotificationBus::Event(entityId, &MaterialComponentNotifications::OnMaterialsEdited);
                     }
@@ -773,7 +771,7 @@ namespace AZ
             {
                 AZ::Data::AssetId materialAssetId = {};
                 MaterialComponentRequestBus::EventResult(
-                    materialAssetId, m_primaryEntityId, &MaterialComponentRequestBus::Events::GetActiveMaterialAssetId, m_materialAssignmentId);
+                    materialAssetId, m_primaryEntityId, &MaterialComponentRequestBus::Events::GetMaterialAssetId, m_materialAssignmentId);
                 return materialAssetId;
             }
 
@@ -838,10 +836,8 @@ namespace AZ
                 m_updateUI |= (m_primaryEntityId == entityId);
             }
 
-            void MaterialPropertyInspector::OnTick(float deltaTime, ScriptTimePoint time)
+            void MaterialPropertyInspector::OnSystemTick()
             {
-                AZ_UNUSED(time);
-                AZ_UNUSED(deltaTime);
                 if (m_updateUI)
                 {
                     m_updateUI = false;
@@ -865,7 +861,7 @@ namespace AZ
                 m_updatePreview = true;
             }
 
-            void MaterialPropertyInspector::OnRenderMaterialPreviewComplete(
+            void MaterialPropertyInspector::OnRenderMaterialPreviewReady(
                 const AZ::EntityId& entityId, const AZ::Render::MaterialAssignmentId& materialAssignmentId, const QPixmap& pixmap)
             {
                 if (m_overviewImage && m_primaryEntityId == entityId && m_materialAssignmentId == materialAssignmentId)
